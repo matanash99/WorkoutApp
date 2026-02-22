@@ -92,9 +92,13 @@ app.put('/api/workouts/finish/:id', (req, res) => {
 
 // ROUTE 8: Get workout history
 app.get('/api/workouts/history', (req, res) => {
-    // We sum the 'set_number' column to get the true total of sets
+    // CHANGED: We now COUNT the drill rows instead of SUMming the sets
     const sql = `
-        SELECT w.id, w.start_time, w.end_time, IFNULL(SUM(s.set_number), 0) AS total_sets 
+        SELECT 
+            w.id, 
+            w.start_time, 
+            w.end_time, 
+            COUNT(s.id) AS total_drills 
         FROM Logged_Workouts w
         LEFT JOIN Logged_Sets s ON w.id = s.logged_workout_id
         WHERE w.end_time IS NOT NULL

@@ -4,7 +4,6 @@ const path = require('path');
 const dbPath = path.resolve(__dirname, 'database.sqlite');
 const db = new sqlite3.Database(dbPath);
 
-// Updated array using 'muscle' instead of 'difficulty'
 const drills = [
     { name: "סקוואט (Squat)", muscle: "רגליים", media_url: "" },
     { name: "לחיצת חזה (Bench Press)", muscle: "חזה", media_url: "" },
@@ -19,10 +18,8 @@ const drills = [
 ];
 
 db.serialize(() => {
-    // 1. Destroy the old table
+    // 1. Rebuild Exercises table with the correct 'muscle' column
     db.run("DROP TABLE IF EXISTS Exercises");
-    
-    // 2. Build the new table with the 'muscle' column
     db.run(`CREATE TABLE Exercises (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
@@ -30,16 +27,33 @@ db.serialize(() => {
         media_url TEXT
     )`);
     
-    // 3. Prepare the inserter
+    // 2. Ensure Workouts and Sets tables exist so the app never crashes
+    db.run(`CREATE TABLE IF NOT EXISTS Logged_Workouts (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        start_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+        end_time DATETIME
+    )`);
+
+    db.run(`CREATE TABLE IF NOT EXISTS Logged_Sets (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        logged_workout_id INTEGER,
+        exercise_id INTEGER,
+        weight REAL,
+        reps INTEGER,
+        set_number INTEGER,
+        FOREIGN KEY(logged_workout_id) REFERENCES Logged_Workouts(id),
+        FOREIGN KEY(exercise_id) REFERENCES Exercises(id)
+    )`);
+
+    // 3. Seed the drills
     const stmt = db.prepare("INSERT INTO Exercises (name, muscle, media_url) VALUES (?, ?, ?)");
-    
-    // 4. Loop through our list and save them all
     drills.forEach(drill => {
         stmt.run(drill.name, drill.muscle, drill.media_url);
     });
-    
     stmt.finalize();
-    console.log("✅ Database table recreated and seeded with the new 'muscle' column!");
+    
+    console.log("✅ Database completely restored and re-seeded!");
 });
 
 db.close();
