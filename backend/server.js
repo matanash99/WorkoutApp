@@ -9,6 +9,10 @@ const PORT = 3000;
 app.use(express.json());
 app.use(cors());
 
+// --- NEW: HOST THE FRONTEND APP ---
+// This tells Node.js to serve our HTML, CSS, and JS directly
+app.use(express.static(path.join(__dirname, '../frontend')));
+
 // Connect to Database
 const dbPath = path.resolve(__dirname, 'database.sqlite');
 const db = new sqlite3.Database(dbPath, (err) => {
