@@ -107,6 +107,22 @@ app.get('/api/workouts/history', (req, res) => {
     });
 });
 
+// ROUTE 9: Delete an entire workout session
+app.delete('/api/workouts/:id', (req, res) => {
+    const workoutId = req.params.id;
+    
+    // First, delete all sets attached to this workout so we don't leave orphaned data
+    db.run(`DELETE FROM Logged_Sets WHERE logged_workout_id = ?`, [workoutId], function(err) {
+        if (err) return res.status(500).json({ error: err.message });
+        
+        // Next, delete the actual workout record
+        db.run(`DELETE FROM Logged_Workouts WHERE id = ?`, [workoutId], function(err) {
+            if (err) return res.status(500).json({ error: err.message });
+            res.json({ message: "Workout deleted successfully" });
+        });
+    });
+});
+
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server is running! API is live at http://localhost:${PORT}`);
