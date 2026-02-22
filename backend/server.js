@@ -64,6 +64,24 @@ app.put('/api/workouts/finish/:id', (req, res) => {
     });
 });
 
+// ROUTE 5: Get workout history (אימונים שלי)
+app.get('/api/workouts/history', (req, res) => {
+    // We use a JOIN to count how many sets belong to each finished workout
+    const sql = `
+        SELECT w.id, w.start_time, w.end_time, COUNT(s.id) AS total_sets 
+        FROM Logged_Workouts w
+        LEFT JOIN Logged_Sets s ON w.id = s.logged_workout_id
+        WHERE w.end_time IS NOT NULL
+        GROUP BY w.id
+        ORDER BY w.start_time DESC
+    `;
+    
+    db.all(sql, [], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ message: "success", data: rows });
+    });
+});
+
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server is running! API is live at http://localhost:${PORT}`);
