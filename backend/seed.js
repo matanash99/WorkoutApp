@@ -6,19 +6,19 @@ const db = new sqlite3.Database(dbPath);
 
 const drills = [
     { name: "סקוואט (Squat)", muscle: "רגליים", media_url: "" },
-    { name: "לחיצת חזה (Bench Press)", muscle: "חזה", media_url: "" },
+    { name: "מטפס הרים (Mountain Climber)", muscle: "חזה", media_url: "assets/mountainclimber.gif" },
     { name: "דדליפט (Deadlift)", muscle: "גב/רגליים", media_url: "" },
     { name: "מתח (Pull-ups)", muscle: "גב", media_url: "" },
     { name: "לחיצת כתפיים (Overhead Press)", muscle: "כתפיים", media_url: "" },
-    { name: "חתירה במוט (Barbell Row)", muscle: "גב", media_url: "" },
-    { name: "כפיפת מרפקים (Biceps Curl)", muscle: "ידיים", media_url: "" },
-    { name: "פשיטת מרפקים (Triceps Ext)", muscle: "ידיים", media_url: "" },
-    { name: "לאנג'ים (Lunges)", muscle: "רגליים", media_url: "../frontend/assets/lunges.gif" },
-    { name: "כפיפות בטן (Crunches)", muscle: "בטן", media_url: "" }
+    { name: "הרמת עגן (Hip Raise)", muscle: "בטן", media_url: "assets/hipraise.gif" },
+    { name: "סמוך קום (Burpee)", muscle: "ידיים", media_url: "assets/burpee.gif" },
+    { name: "סופרמן (Superman)", muscle: "בטן", media_url: "assets/superman.gif" },
+    { name: "לאנג'ים (Lunges)", muscle: "רגליים", media_url: "assets/lunges.gif" },
+    { name: "כפיפות בטן (Crunches)", muscle: "בטן", media_url: "assets/crunches.gif" }
 ];
 
 db.serialize(() => {
-    // 1. Rebuild Exercises table with the correct 'muscle' column
+    // 1. Rebuild Exercises table with the correct 'muscle' and 'media_url' columns
     db.run("DROP TABLE IF EXISTS Exercises");
     db.run(`CREATE TABLE Exercises (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -28,9 +28,10 @@ db.serialize(() => {
     )`);
     
     // 2. Ensure Workouts and Sets tables exist so the app never crashes
+    // FIXED: changed user_id to TEXT to support your custom Trainee IDs
     db.run(`CREATE TABLE IF NOT EXISTS Logged_Workouts (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER,
+        user_id TEXT,
         start_time DATETIME DEFAULT CURRENT_TIMESTAMP,
         end_time DATETIME
     )`);

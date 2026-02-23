@@ -195,7 +195,6 @@ function renderExercises(exercises) {
 // --- Start Training ---
 async function startTraining(drill) {
     if (!currentWorkoutId) {
-        // Change the fetch request to POST the user ID
         const response = await fetch(`${API_BASE}/workouts/start`, { 
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -210,7 +209,16 @@ async function startTraining(drill) {
 
     currentDrillId = drill.id; 
     currentDrillName.textContent = drill.name;
-    drillAnimation.src = drill.media_url; 
+    
+    // THE FIX: Safely show the GIF if it exists, hide the box if it doesn't
+    if (drill.media_url) {
+        drillAnimation.src = drill.media_url; 
+        drillAnimation.style.display = 'block'; // Make it visible
+    } else {
+        drillAnimation.src = '';
+        drillAnimation.style.display = 'none'; // Hide the broken image box
+    }
+    
     pageTitle.textContent = "אימון נוכחי"; 
 
     viewExercises.classList.replace('active-view', 'hidden-view');
