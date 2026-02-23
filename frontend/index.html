@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>אימונים</title>
+    <link rel="stylesheet" href="styles.css">
+    
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="אימונים">
+    <link rel="apple-touch-icon" href="./assets/icon.png">
+</head>
+<body>
+    <div class="app-container">
+        
+        <header class="top-bar">
+            <button id="menu-btn" class="nav-btn">תפריט</button>
+            <h1 class="page-title">תרגילים</h1>
+        </header>
+
+        <aside id="side-menu" class="side-drawer">
+            <button id="close-menu-btn" class="nav-btn close-btn">X</button>
+            <nav class="drawer-links">
+                <a href="#" id="nav-drills" class="menu-link">תרגילים</a>
+                <a href="#" id="nav-history" class="menu-link">אימונים שלי</a>
+                <a href="#" id="nav-change-user" class="menu-link" style="color: #d9534f; margin-top: 20px;">החלף משתמש</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+
+            <section id="view-exercises" class="app-view active-view">
+                
+                <div id="current-sets-container" style="margin-bottom: 20px; border: 2px solid #000; padding: 10px; display: none;">
+                    <h3 style="text-align: center; margin-bottom: 10px;">אימון נוכחי</h3>
+                    <ul id="current-sets-list" class="item-list">
+                    </ul>
+                </div>
+
+                <ul id="exercise-list" class="item-list">
+                </ul>
+                
+                <button id="finish-btn-main" class="submit-btn" style="display: none; background-color: #000000; color: #ffffff; margin-top: 15px;">סיום אימון</button>
+            </section>
+
+            <section id="view-training" class="app-view hidden-view">
+                <h2 id="current-drill-name" class="drill-title">שם תרגיל</h2>
+                
+                <div class="media-box">
+                    <img id="drill-animation" src="" alt="אנימציית תרגיל" class="drill-img">
+                </div>
+
+                <form id="log-form" class="input-form">
+                    <div class="input-group">
+                        <label for="weight-input">משקל (ק״ג):</label>
+                        <input type="number" id="weight-input" class="num-input" step="0.5" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="reps-input">חזרות:</label>
+                        <input type="number" id="reps-input" class="num-input" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="sets-input">סטים:</label>
+                        <input type="number" id="sets-input" class="num-input" value="1" min="1" required>
+                    </div>
+                    <button type="submit" class="submit-btn">שמור</button>
+                </form>
+
+                <div id="success-msg" class="alert-msg hidden-view">נשמר בהצלחה!</div>
+
+                <button id="back-list-btn" class="submit-btn" style="margin-top: 15px;">הוסף תרגיל</button>
+                <button id="finish-btn-drill" class="submit-btn" style="display: none; background-color: #000000; color: #ffffff; margin-top: 15px;">סיום אימון</button>
+            </section>
+
+            <section id="view-history" class="app-view hidden-view">
+                <ul id="history-list" class="item-list">
+                </ul>
+            </section>
+
+            <section id="view-workout-details" class="app-view hidden-view">
+                <h2 id="details-title" class="drill-title">פרטי אימון</h2>
+                
+                <ul id="details-list" class="item-list">
+                </ul>
+
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <button id="back-history-btn" class="submit-btn" style="background-color: #555; flex: 1;">חזור</button>
+                    <button id="delete-workout-btn" class="submit-btn" style="background-color: #d9534f; color: white; flex: 1;">מחק אימון</button>
+                </div>
+            </section>
+            <div id="custom-modal" class="modal-overlay hidden-view">
+                <div class="modal-box">
+                    <h3 id="modal-title" style="margin-bottom: 10px; font-size: 1.4rem;">כותרת</h3>
+                    <p id="modal-message" style="margin-bottom: 15px; font-size: 1.1rem;">הודעה</p>
+                    
+                    <div id="modal-inputs" style="display: none; flex-direction: column; gap: 10px;"></div>
+
+                    <div class="modal-buttons">
+                        <button id="modal-cancel-btn" class="submit-btn" style="background-color: #777; flex: 1;">ביטול</button>
+                        <button id="modal-confirm-btn" class="submit-btn" style="flex: 1;">אישור</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

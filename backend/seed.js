@@ -13,7 +13,7 @@ const drills = [
     { name: "חתירה במוט (Barbell Row)", muscle: "גב", media_url: "" },
     { name: "כפיפת מרפקים (Biceps Curl)", muscle: "ידיים", media_url: "" },
     { name: "פשיטת מרפקים (Triceps Ext)", muscle: "ידיים", media_url: "" },
-    { name: "לאנג'ים (Lunges)", muscle: "רגליים", media_url: "" },
+    { name: "לאנג'ים (Lunges)", muscle: "רגליים", media_url: "../frontend/assets/lunges.gif" },
     { name: "כפיפות בטן (Crunches)", muscle: "בטן", media_url: "" }
 ];
 

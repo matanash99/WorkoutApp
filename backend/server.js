@@ -29,8 +29,11 @@ app.get('/api/exercises', (req, res) => {
 
 // ROUTE 2: Start a new workout session
 app.post('/api/workouts/start', (req, res) => {
-    const sql = `INSERT INTO Logged_Workouts (user_id) VALUES (1)`;
-    db.run(sql, function(err) {
+    const { userId } = req.body; // Grab the Trainee ID from the app
+    
+    // Save the specific ID to the database
+    const sql = `INSERT INTO Logged_Workouts (user_id) VALUES (?)`;
+    db.run(sql, [userId], function(err) {
         if (err) return res.status(500).json({ error: err.message });
         res.json({ message: "Workout started", workoutId: this.lastID });
     });
@@ -90,9 +93,11 @@ app.put('/api/workouts/finish/:id', (req, res) => {
     });
 });
 
-// ROUTE 8: Get workout history
-app.get('/api/workouts/history', (req, res) => {
-    // CHANGED: We now COUNT the drill rows instead of SUMming the sets
+// ROUTE 8: Get workout history for a specific user
+app.get('/api/workouts/history/:userId', (req, res) => {
+    const userId = req.params.userId;
+    
+    // Fetch only the rows that match this specific user
     const sql = `
         SELECT 
             w.id, 
@@ -101,11 +106,11 @@ app.get('/api/workouts/history', (req, res) => {
             COUNT(s.id) AS total_drills 
         FROM Logged_Workouts w
         LEFT JOIN Logged_Sets s ON w.id = s.logged_workout_id
-        WHERE w.end_time IS NOT NULL
+        WHERE w.end_time IS NOT NULL AND w.user_id = ?
         GROUP BY w.id
         ORDER BY w.start_time DESC
     `;
-    db.all(sql, [], (err, rows) => {
+    db.all(sql, [userId], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json({ message: "success", data: rows });
     });
