@@ -5,16 +5,16 @@ const dbPath = path.resolve(__dirname, 'database.sqlite');
 const db = new sqlite3.Database(dbPath);
 
 const drills = [
-    { name: "סקוואט (Squat)", muscle: "רגליים", media_url: "" },
-    { name: "מטפס הרים (Mountain Climber)", muscle: "חזה", media_url: "assets/mountainclimber.gif" },
-    { name: "דדליפט (Deadlift)", muscle: "גב/רגליים", media_url: "" },
-    { name: "מתח (Pull-ups)", muscle: "גב", media_url: "" },
-    { name: "לחיצת כתפיים (Overhead Press)", muscle: "כתפיים", media_url: "" },
-    { name: "הרמת עגן (Hip Raise)", muscle: "בטן", media_url: "assets/hipraise.gif" },
-    { name: "סמוך קום (Burpee)", muscle: "ידיים", media_url: "assets/burpee.gif" },
-    { name: "סופרמן (Superman)", muscle: "בטן", media_url: "assets/superman.gif" },
-    { name: "לאנג'ים (Lunges)", muscle: "רגליים", media_url: "assets/lunges.gif" },
-    { name: "כפיפות בטן (Crunches)", muscle: "בטן", media_url: "assets/crunches.gif" }
+    { name: "סקוואט אחורי (Back Squat)", muscle: "רגליים", media_url: "assets/back_squat.gif" },
+    { name: "סקוואט קדמי (Front Squat)", muscle: "רגליים", media_url: "assets/front_squat.gif" },
+    { name: "דדליפט (Deadlift)", muscle: "גב/רגליים", media_url: "assets/deadlift.gif" },
+    { name: "לחיצת חזה (Bench Press)", muscle: "חזה", media_url: "assets/bench_press.gif" },
+    { name: "קלין (Clean)", muscle: "רגליים/גב", media_url: "assets/clean.gif" },
+    { name: "קלין גבוה (High Clean)", muscle: "רגליים/גב", media_url: "assets/high_clean.gif" },
+    { name: "הרמת אגן (Hip Raise)", muscle: "בטן", media_url: "assets/hip_raise.gif" },
+    { name: "לאנג' (Lunge)", muscle: "רגליים", media_url: "assets/lunge.gif" },
+    { name: "סטפ אפ (Step Up)", muscle: "רגליים", media_url: "assets/step_up.gif" },
+    { name: "אמריקן (American Swing)", muscle: "כתפיים/גב", media_url: "assets/american.gif" }
 ];
 
 db.serialize(() => {
